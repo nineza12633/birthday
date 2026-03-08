@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>Happy Birthday</title>
+
+<style>
+
+body{
+margin:0;
+overflow:hidden;
+background:black;
+font-family:sans-serif;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+color:white;
+}
+
+#countdown{
+font-size:120px;
+font-weight:bold;
+}
+
+#message{
+position:absolute;
+font-size:50px;
+text-align:center;
+opacity:0;
+transition:0.6s;
+}
+
+.heart{
+position:fixed;
+top:-10px;
+color:#ff69b4;
+font-size:20px;
+animation:fall linear infinite;
+}
+
+@keyframes fall{
+to{
+transform:translateY(110vh);
+}
+}
+
+#photoBox{
+position:absolute;
+bottom:80px;
+display:none;
+}
+
+#photo{
+width:260px;
+border-radius:25px;
+border:6px solid white;
+box-shadow:0 0 20px #ff69b4;
+cursor:pointer;
+transition:0.3s;
+}
+
+#photo:hover{
+transform:scale(1.05);
+}
+
+</style>
+</head>
+
+<body onclick="start()">
+
+<div id="countdown">แตะหน้าจอเพื่อเริ่ม</div>
+<div id="message"></div>
+
+<div id="photoBox">
+<img id="photo" src="photo1.jpg">
+</div>
+
+<audio id="music">
+<source src="song.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+
+let started=false
+let countdown=document.getElementById("countdown")
+let message=document.getElementById("message")
+let music=document.getElementById("music")
+
+let texts=[
+"Happy",
+"birthday",
+"to",
+"มอมอ",
+"24แล้วนะ",
+"ขอให้ทุกวัน",
+"หลังจากนี้",
+"เป็นวันที่ดี",
+"สำหรับเธอน้าา🥰"
+]
+
+let i=0
+
+function start(){
+
+if(started) return
+started=true
+
+let count=5
+countdown.innerText=count
+
+let timer=setInterval(()=>{
+
+count--
+countdown.innerText=count
+
+if(count==0){
+
+clearInterval(timer)
+countdown.style.display="none"
+
+startHearts()
+music.volume = 0.5
+music.play()
+showText()
+
+}
+
+},1000)
+
+}
+
+function startHearts(){
+
+setInterval(()=>{
+
+let heart=document.createElement("div")
+heart.classList.add("heart")
+heart.innerHTML="❤"
+
+heart.style.left=Math.random()*100+"vw"
+heart.style.animationDuration=(Math.random()*3+2)+"s"
+
+document.body.appendChild(heart)
+
+setTimeout(()=>{heart.remove()},5000)
+
+},200)
+
+}
+
+function showText(){
+
+message.style.opacity=1
+
+let textTimer=setInterval(()=>{
+
+message.innerText=texts[i]
+
+i++
+
+if(i>=texts.length){
+
+clearInterval(textTimer)
+
+setTimeout(()=>{
+showPhoto()
+},2000)
+
+}
+
+},2000)
+
+}
+
+function showPhoto(){
+
+message.style.display="none"
+
+document.getElementById("photoBox").style.display="block"
+
+}
+
+let photos=[
+"photo1.jpg",
+"photo2.jpg",
+"photo3.png"
+]
+
+let p=0
+
+document.getElementById("photo").onclick=function(){
+
+p++
+
+if(p>=photos.length){
+p=0
+}
+
+this.src=photos[p]
+
+}
+
+</script>
+
+</body>
+</html>
